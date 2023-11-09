@@ -1,9 +1,9 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\students;
-
 class StudentsController extends Controller
 {
     /**
@@ -11,33 +11,46 @@ class StudentsController extends Controller
      */
     public function index()
     {
-        $student = students::All();
-        if (!empty($student)) {
-			$response = [
-				'message' => 'Menampilkan Data Semua Student',
-				'data' => $student,
-			];
-			return response()->json($response, 200);
-		} else {
-			$response = [
-				'message' => 'Data tidak ada'
-			];
-			return response()->json($response, 200);
+        try {
+            $students = students::all();
+
+            if (!$students->isEmpty()) {
+                $response = [
+                    'message' => 'Menampilkan Data Semua Student',
+                    'data' => $students,
+                ];
+                return response()->json($response, 200);
+            } else {
+                throw new \Exception('Data tidak ada');
+            }
+        } catch (\Exception $e) {
+            $response = [
+                'message' => $e->getMessage(),
+            ];
+            return response()->json($response, 200);
+        }
     }
-    }
+
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        $student = students::create($request->all());
+        try {
+            $student = students::create($request->all());
 
-		$response = [
-			'message' => 'Data Berhasil Dibuat',
-			'data' => $student,
-		];
+            $response = [
+                'message' => 'Data Berhasil Dibuat',
+                'data' => $student,
+            ];
 
-		return response()->json($response, 201);
+            return response()->json($response, 201);
+        } catch (\Exception $e) {
+            $response = [
+                'message' => $e->getMessage(),
+            ];
+            return response()->json($response, 400);
+        }
     }
 
     /**
@@ -45,22 +58,25 @@ class StudentsController extends Controller
      */
     public function show($id)
     {
-        $student = students::find($id);
+        try {
+            $student = students::find($id);
 
-		if ($student) {
-			$response = [
-				'message' => 'Get detail student',
-				'data' => $student
-			];
+            if ($student) {
+                $response = [
+                    'message' => 'Get detail student',
+                    'data' => $student,
+                ];
 
-			return response()->json($response, 200);
-		} else {
-			$response = [
-				'message' => 'Data not found'
-			];
-
-			return response()->json($response, 404);
-		}
+                return response()->json($response, 200);
+            } else {
+                throw new \Exception('Data not found');
+            }
+        } catch (\Exception $e) {
+            $response = [
+                'message' => $e->getMessage(),
+            ];
+            return response()->json($response, 404);
+        }
     }
 
     /**
@@ -68,22 +84,25 @@ class StudentsController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $student = students::find($id);
+        try {
+            $student = students::find($id);
 
-		if ($student) {
-			$response = [
-				'message' => 'Student is updated',
-				'data' => $student->update($request->all())
-			];
+            if ($student) {
+                $response = [
+                    'message' => 'Student is updated',
+                    'data' => $student->update($request->all()),
+                ];
 
-			return response()->json($response, 200);
-		} else {
-			$response = [
-				'message' => 'Error'
-			];
-
-			return response()->json($response, 400);
-		}
+                return response()->json($response, 200);
+            } else {
+                throw new \Exception('Data not found');
+            }
+        } catch (\Exception $e) {
+            $response = [
+                'message' => $e->getMessage(),
+            ];
+            return response()->json($response, 400);
+        }
     }
 
     /**
@@ -91,21 +110,24 @@ class StudentsController extends Controller
      */
     public function destroy(string $id)
     {
-        $student = students::find($id);
+        try {
+            $student = students::find($id);
 
-		if ($student) {
-			$response = [
-				'message' => 'Student is delete',
-				'data' => $student->delete()
-			];
+            if ($student) {
+                $response = [
+                    'message' => 'Student is delete',
+                    'data' => $student->delete(),
+                ];
 
-			return response()->json($response, 200);
-		} else {
-			$response = [
-				'message' => 'Data not found'
-			];
-
-			return response()->json($response, 404);
-		}
+                return response()->json($response, 200);
+            } else {
+                throw new \Exception('Data not found');
+            }
+        } catch (\Exception $e) {
+            $response = [
+                'message' => $e->getMessage(),
+            ];
+            return response()->json($response, 404);
+        }
     }
 }
