@@ -1,0 +1,17 @@
+{
+  "name": "praktikum12",
+  "version": "1.0.0",
+  "description": "Config Express js ke Database Mysql",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "mysql": "^2.18.1",
+    "nodemon": "^3.0.2"
+  }
+}
